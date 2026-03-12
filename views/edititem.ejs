@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Todo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #06beb6 0%, #48b1bf 50%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #0d4f4f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .edit-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 12px 45px rgba(6, 190, 182, 0.3);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06beb6 0%, #11998e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .current-todo {
+            background: linear-gradient(135deg, rgba(6, 190, 182, 0.08) 0%, rgba(56, 239, 125, 0.08) 100%);
+            border: 2px solid rgba(6, 190, 182, 0.3);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 35px;
+        }
+
+        .current-todo-label {
+            font-size: 0.85rem;
+            color: rgba(13, 79, 79, 0.6);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+        }
+
+        .current-todo-text {
+            font-size: 1.2rem;
+            color: #0d4f4f;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            color: #0d4f4f;
+            font-size: 1.15rem;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: rgba(6, 190, 182, 0.05);
+            border: 2px solid rgba(6, 190, 182, 0.3);
+            border-radius: 14px;
+            padding: 16px 22px;
+            color: #0d4f4f;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(13, 79, 79, 0.4);
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #06beb6;
+            box-shadow: 0 0 0 4px rgba(6, 190, 182, 0.15);
+            background: rgba(6, 190, 182, 0.08);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.5);
+            background: linear-gradient(135deg, #0da89e 0%, #2ee06d 100%);
+        }
+
+        .btn-secondary {
+            background: rgba(6, 190, 182, 0.1);
+            color: #0d4f4f;
+            border: 2px solid rgba(6, 190, 182, 0.3);
+            font-weight: 600;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(6, 190, 182, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(6, 190, 182, 0.2);
+            border-color: rgba(6, 190, 182, 0.5);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.95);
+            text-decoration: none;
+            margin-bottom: 24px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .back-arrow {
+            font-size: 1.3rem;
+        }
+
+        @media (max-width: 600px) {
+            .edit-card {
+                padding: 30px 24px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/todo" class="back-link">
+            <span class="back-arrow">←</span>
+            <span>Back to List</span>
+        </a>
+
+        <div class="edit-card">
+            <h1>✏️ Edit Your Task</h1>
+            
+            <div class="current-todo">
+                <div class="current-todo-label">Current Task</div>
+                <div class="current-todo-text"><%- todo %></div>
+            </div>
+
+            <form action="/todo/edit/<%= todoIdx %>" method="post">
+                <input type="hidden" name="_method" value="PUT">
+                
+                <div class="form-group">
+                    <label for="editTodo">🌟 Update to:</label>
+                    <input 
+                        type="text" 
+                        name="editTodo" 
+                        id="editTodo" 
+                        placeholder="Enter your updated task..." 
+                        autofocus 
+                        required 
+                    />
+                </div>
+
+                <div class="button-group">
+                    <input type="submit" value="Save Changes" class="btn btn-primary" />
+                    <a href="/todo" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

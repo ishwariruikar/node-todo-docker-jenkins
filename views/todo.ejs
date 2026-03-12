@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List APP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #06beb6 0%, #48b1bf 50%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #0d4f4f;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 35px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(6, 190, 182, 0.3);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #06beb6 0%, #11998e 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 20px rgba(6, 190, 182, 0.2);
+        }
+
+        .task-counter {
+            display: inline-block;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            box-shadow: 0 4px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .todo-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .todo-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 18px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+            position: relative;
+            transition: all 0.3s ease;
+            animation: slideIn 0.4s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(6, 190, 182, 0.15);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .todo-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px rgba(6, 190, 182, 0.3);
+            border-color: rgba(6, 190, 182, 0.6);
+        }
+
+        .todo-text {
+            flex: 1;
+            color: #0d4f4f;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding-right: 10px;
+            word-break: break-word;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, #ffd93d 0%, #ffb347 100%);
+            box-shadow: 0 4px 15px rgba(255, 217, 61, 0.3);
+        }
+
+        .edit-btn:hover {
+            background: linear-gradient(135deg, #ffe066 0%, #ffc166 100%);
+            box-shadow: 0 6px 25px rgba(255, 217, 61, 0.5);
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #ff8787 0%, #ff6b8a 100%);
+            box-shadow: 0 6px 25px rgba(255, 107, 107, 0.5);
+            transform: scale(1.15) rotate(-5deg);
+        }
+
+        .add-todo-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 10px 40px rgba(6, 190, 182, 0.2);
+        }
+
+        .add-todo-section label {
+            display: block;
+            color: #0d4f4f;
+            font-size: 1.15rem;
+            margin-bottom: 18px;
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .input-group input[type="text"] {
+            flex: 1;
+            background: rgba(6, 190, 182, 0.05);
+            border: 2px solid rgba(6, 190, 182, 0.3);
+            border-radius: 14px;
+            padding: 16px 22px;
+            color: #0d4f4f;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .input-group input[type="text"]::placeholder {
+            color: rgba(13, 79, 79, 0.4);
+        }
+
+        .input-group input[type="text"]:focus {
+            outline: none;
+            border-color: #06beb6;
+            box-shadow: 0 0 0 4px rgba(6, 190, 182, 0.15);
+            background: rgba(6, 190, 182, 0.08);
+        }
+
+        .input-group input[type="submit"] {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border: none;
+            border-radius: 14px;
+            padding: 16px 40px;
+            color: white;
+            font-size: 1.05rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .input-group input[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.5);
+            background: linear-gradient(135deg, #0da89e 0%, #2ee06d 100%);
+        }
+
+        .input-group input[type="submit"]:active {
+            transform: translateY(-1px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            filter: grayscale(20%);
+        }
+
+        .empty-state-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0d4f4f;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .input-group input[type="submit"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌊 My Todo List</h1>
+            <% if (todolist.length > 0) { %>
+                <div class="task-counter">
+                    <%= todolist.length %> <%= todolist.length === 1 ? 'Task' : 'Tasks' %>
+                </div>
+            <% } %>
+        </header>
+
+        <% if (todolist.length === 0) { %>
+            <div class="empty-state">
+                <div class="empty-state-icon">🏖️</div>
+                <div class="empty-state-text">All clear! Add your first task below.</div>
+            </div>
+        <% } else { %>
+            <ul class="todo-list">
+                <% todolist.forEach(function(todo, index) { %>
+                <li class="todo-item">
+                    <div class="todo-text"><%- todo %></div>
+                    <div class="todo-actions">
+                        <a href="/todo/<%= index %>" class="action-btn edit-btn" title="Edit">✎</a>
+                        <a href="/todo/delete/<%= index %>" class="action-btn delete-btn" title="Delete">✘</a>
+                    </div>
+                </li>
+                <% }); %>
+            </ul>
+        <% } %>
+
+        <div class="add-todo-section">
+            <form action="/todo/add/" method="post">
+                <label for="newtodo">✨ What's next on your list?</label>
+                <div class="input-group">
+                    <input type="text" name="newtodo" id="newtodo" placeholder="Type your task here..." autofocus required />
+                    <input type="submit" value="Add Task" />
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
